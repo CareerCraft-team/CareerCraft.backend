@@ -28,13 +28,19 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const profileRoutes = require('./routes/profile');
-const createResumeRoutes = require('./routes/create-resume');
-const createVacancyRoutes = require('./routes/create-vacancy');
+const companyRoutes = require('./routes/company');
+const employeeRoutes = require('./routes/employee');
+const questionRoutes = require('./routes/question');
+const recruiterRoutes = require('./routes/recruiter');
+const resumeRoutes = require('./routes/resume');
+const vacancyRoutes = require('./routes/vacancy');
 
-app.use('/api', profileRoutes);
-app.use('/api', createResumeRoutes);
-app.use('/api', createVacancyRoutes);
+app.use('/api', companyRoutes);
+app.use('/api', employeeRoutes);
+app.use('/api', questionRoutes);
+app.use('/api', recruiterRoutes);
+app.use('/api', resumeRoutes);
+app.use('/api', vacancyRoutes);
 
 app.listen(3000, (err) => {
     if (err) {
