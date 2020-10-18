@@ -6,7 +6,7 @@ const QuestionSchema = new Schema({
         type: String,
         required: true,
     },
-    question_type: {
+    questionType: {
         type: String,
         default: 'text',
         enum: ['multiple-choise', 'single-choise', 'text'],
@@ -15,4 +15,9 @@ const QuestionSchema = new Schema({
         type: String,
         required: true,
     },
+    correctAnswer: {
+        type: String,
+    },
 });
+
+module.exports = mongoose.model('Question', QuestionSchema);

@@ -34,3 +34,5 @@ const ResumeSchema = new Schema({
         ref: 'Comments',
     },
 });
+
+module.exports = mongoose.model('Resume', ResumeSchema);

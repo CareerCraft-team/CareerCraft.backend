@@ -6,6 +6,7 @@ const VacancySchema = new Schema({
         type: String,
         required: true,
     },
+    recruiter: { type: Schema.Types.ObjectId, ref: 'Recruiter' },
     salary: {
         type: String,
         required: true,
