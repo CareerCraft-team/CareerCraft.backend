@@ -14,8 +14,8 @@ const CompanySchema = new Schema({
         type: String,
         required: true,
     },
-    employees: [{ type: Schema.Types.ObjectId, ref: 'user_recruter' }],
-    vacancies: [{ type: Schema.Types.ObjectId, ref: 'vacancy' }],
+    employees: [{ type: Schema.Types.ObjectId, ref: 'Recruter' }],
+    vacancies: [{ type: Schema.Types.ObjectId, ref: 'Vacancy' }],
 });
 
 module.exports = mongoose.model('Company', CompanySchema);
