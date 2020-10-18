@@ -21,11 +21,11 @@ const EmployeeSchema = new Schema({
     },
     age: {
         type: Number,
-        required: true,
+        // required: true,
     },
     language: {
         type: String,
-        required: true,
+        // required: true,
         default: 'en',
         enum: ['en', 'ru', 'kz'],
     },
@@ -35,7 +35,7 @@ const EmployeeSchema = new Schema({
     },
     avatar: {
         type: String,
-        required: true,
+        // required: true,
     },
     questions: {
         type: Schema.Types.ObjectId,
@@ -43,7 +43,7 @@ const EmployeeSchema = new Schema({
     },
     resumes: {
         type: Schema.Types.ObjectId,
-        required: true,
+        // required: true,
         ref: 'Resume',
     },
 });

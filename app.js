@@ -5,9 +5,6 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
-const UserEmployee = require('./models/user_employee');
-const UserRecruter = require('./models/user_recruter');
-
 dotenv.config();
 
 const app = express();
