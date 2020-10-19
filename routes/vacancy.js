@@ -27,15 +27,13 @@ router.post('/vacancies', upload.single('photo'), async(req, res) => {
     }
 });
 
-router.get('/products', async(req, res) => {
+router.get('/vacancies', async(req, res) => {
     try {
-        let products = await Product.find()
-            .populate('owner category')
-            .populate('reviews', 'rating')
-            .exec();
+        let vacancies = await Vacancy.find().populate('recruiter').exec();
+        // .populate('reviews', 'rating')
         res.json({
             success: true,
-            products: products,
+            vacancies: vacancies,
         });
     } catch (err) {
         res.status(500).json({
@@ -45,15 +43,15 @@ router.get('/products', async(req, res) => {
     }
 });
 
-router.get('/products/:id', async(req, res) => {
+router.get('/vacancies/:id', async(req, res) => {
     try {
-        let product = await (await Product.findOne({ _id: req.params.id }))
-            .populated('owner category')
-            .populate('reviews', 'rating')
+        let vacancy = await (await Vacancy.findOne({ _id: req.params.id }))
+            .populated('recruiter')
             .exec();
+        // .populate('reviews', 'rating')
         res.json({
             success: true,
-            product: product,
+            vacancy: vacancy,
         });
     } catch (err) {
         res.status(500).json({
@@ -63,21 +61,23 @@ router.get('/products/:id', async(req, res) => {
     }
 });
 
-router.put('/products/:id', upload.single('photo'), async(req, res) => {
+router.put('/vacancies/:id', upload.single('photo'), async(req, res) => {
     try {
-        let product = await Product.findOneAndUpdate({ _id: req.params.id }, {
+        let vacancy = await Vacancy.findOneAndUpdate({ _id: req.params.id }, {
             $set: {
                 title: req.body.title,
-                price: req.body.price,
-                category: req.body.categoryID,
-                photo: req.file.location,
+                salary: req.body.salary,
+                salary_type: req.body.salary_type,
                 description: req.body.description,
-                owner: req.body.ownerID,
+                skills_required: req.body.skills_required,
+                work_type: req.body.work_type,
+                recruiterID: req.body.recruiterID,
+                candidateID: req.body.candidateID,
             },
         }, { upsert: true });
         res.json({
             success: true,
-            updatedProduct: product,
+            updatedVacancy: vacancy,
         });
     } catch (err) {
         res.status(500).json({
@@ -87,10 +87,10 @@ router.put('/products/:id', upload.single('photo'), async(req, res) => {
     }
 });
 
-router.delete('/products/:id', async(req, res) => {
+router.delete('/vacancies/:id', async(req, res) => {
     try {
-        let deletedProduct = await Product.findOneAndDelete({ _id: req.params.id });
-        if (deletedProduct) {
+        let deletedVacancy = await Vacancy.findOneAndDelete({ _id: req.params.id });
+        if (deletedVacancy) {
             res.json({
                 status: true,
                 message: 'Successfully deleted',

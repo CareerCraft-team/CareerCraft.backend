@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const User = require('../models/user_employee');
+const Employee = require('../models/user_employee');
 const verifyToken = require('../middlewares/verify-token');
 const jwt = require('jsonwebtoken');
 const upload = require('../middlewares/upload-photo');
@@ -9,13 +9,13 @@ router.post('/auth/employee/signup', upload.single('photo'), async(req, res) => 
         res.json({ success: false, message: 'Enter email or password' });
     } else {
         try {
-            let newUser = new User();
+            let newUser = new Employee();
             newUser.first_name = req.body.first_name;
             newUser.last_name = req.body.last_name;
             newUser.email = req.body.email;
             newUser.password = req.body.password;
             newUser.date_of_birth = req.body.date_of_birth;
-            newUser.avatar = req.file.location;
+            // newUser.avatar = req.file.location;
 
             await newUser.save();
             let token = jwt.sign(newUser.toJSON(), process.env.SECRET, {
@@ -39,7 +39,7 @@ router.post('/auth/employee/signup', upload.single('photo'), async(req, res) => 
 
 router.get('/auth/employee/user', verifyToken, async(req, res) => {
     try {
-        let foundUser = await (await User.findOne({ _id: req.decoded._id })).populate(
+        let foundUser = await (await Employee.findOne({ _id: req.decoded._id })).populate(
             'resume'
         );
         if (foundUser) {
@@ -59,7 +59,7 @@ router.get('/auth/employee/user', verifyToken, async(req, res) => {
 // Update profile
 router.put('/auth/employee/user', verifyToken, async(req, res) => {
     try {
-        let foundUser = await User.findOne({ _id: req.decoded._id });
+        let foundUser = await Employee.findOne({ _id: req.decoded._id });
         if (foundUser) {
             if (req.body.first_name) foundUser.first_name = req.body.first_name;
             if (req.body.last_name) foundUser.last_name = req.body.last_name;
@@ -83,9 +83,9 @@ router.put('/auth/employee/user', verifyToken, async(req, res) => {
 });
 
 // Login ROute
-router.post('/auth/employee/login', async(req, res) => {
+router.post('/auth/login', async(req, res) => {
     try {
-        let foundUser = await User.findOne({ email: req.body.email });
+        let foundUser = await Employee.findOne({ email: req.body.email });
         if (!foundUser) {
             res.status(403).json({
                 success: false,
