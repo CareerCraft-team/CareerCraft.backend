@@ -2,6 +2,7 @@ const router = require('express').Router();
 const Question = require('../models/question');
 const verifyToken = require('../middlewares/verify-token');
 
+// Creating questions
 router.post('/questions', verifyToken, async(req, res) => {
     try {
         let questions = new Question();
@@ -11,11 +12,16 @@ router.post('/questions', verifyToken, async(req, res) => {
         questions.description = req.body.description;
         questions.correctAnswer = req.body.correctAnswer;
 
-        await questions.save();
-        res.json({
-            success: true,
-            message: 'Successfully added new question!',
-        });
+        await questions.save().then((docs) => {
+            UserModel.updateOne({ _id: data.createdBy }, { $push: { createdForms: docs._id } })
+                .then(() => {
+                    console.log("Form id added to user deeatils");
+                }).catch(error => console.log("got some error"))
+            res.status(200).json(
+                docs
+            );
+        })
+
     } catch (err) {
         res.status(500).json({
             success: false,
@@ -23,10 +29,10 @@ router.post('/questions', verifyToken, async(req, res) => {
         });
     }
 });
-
+// Getting all question forms
 router.get('/questions', verifyToken, async(req, res) => {
     try {
-        let questions = await Question.find({ user: req.decoded._id });
+        let questions = await Question.find({ user: req.decoded._id }).lean();
 
         res.json({
             success: true,
@@ -39,7 +45,7 @@ router.get('/questions', verifyToken, async(req, res) => {
         });
     }
 });
-
+// Get question form by its id
 router.get('/questions/:id', verifyToken, async(req, res) => {
     try {
         let question = await Question.findOne({ _id: req.params.id });
