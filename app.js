@@ -25,6 +25,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+const authRoutes = require('./routes/auth');
 const companyRoutes = require('./routes/company');
 const employeeRoutes = require('./routes/employee');
 const questionRoutes = require('./routes/question');
@@ -32,6 +33,7 @@ const recruiterRoutes = require('./routes/recruiter');
 const resumeRoutes = require('./routes/resume');
 const vacancyRoutes = require('./routes/vacancy');
 
+app.use('/api', authRoutes);
 app.use('/api', companyRoutes);
 app.use('/api', employeeRoutes);
 app.use('/api', questionRoutes);
